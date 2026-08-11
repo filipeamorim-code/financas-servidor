@@ -160,3 +160,14 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+
+// ── AUTO-PING: mantém o Render acordado (evita dormir após 15min) ──
+const SELF_URL = process.env.RENDER_EXTERNAL_URL || null;
+if (SELF_URL) {
+  setInterval(() => {
+    fetch(SELF_URL)
+      .then(() => console.log('Auto-ping OK —', new Date().toLocaleTimeString('pt-BR')))
+      .catch(err => console.log('Auto-ping falhou:', err.message));
+  }, 10 * 60 * 1000); // a cada 10 minutos
+  console.log('Auto-ping ativado para:', SELF_URL);
+}
