@@ -84,13 +84,28 @@ function detectarCategoria(descricao, tipo) {
 // ── Detecta tipo pelo título/texto da notificação ──
 function detectarTipo(titulo, texto) {
   const t = (titulo + ' ' + texto).toLowerCase();
-  if (t.includes('receb') || t.includes('recei') || t.includes('creditad') ||
-      t.includes('você recebeu') || t.includes('entrada'))
-    return 'entrada';
-  if (t.includes('enviad') || t.includes('pix enviad') || t.includes('transferencia') ||
-      t.includes('transferência') || t.includes('pagamento realizado') ||
-      t.includes('você pagou') || t.includes('você enviou') || t.includes('debitad'))
+
+  // ── SAÍDA (dinheiro saindo) — verificado primeiro para ter prioridade ──
+  if (t.includes('você pagou') || t.includes('voce pagou') ||
+      t.includes('pix enviado') || t.includes('enviad') ||
+      t.includes('transferencia feita') || t.includes('transferência feita') ||
+      t.includes('transferencia enviada') || t.includes('transferência enviada') ||
+      t.includes('você enviou') || t.includes('voce enviou') ||
+      t.includes('pagamento realizado') || t.includes('pagamento efetuado') ||
+      t.includes('debitad') || t.includes('você transferiu') || t.includes('voce transferiu') ||
+      t.includes('compra aprovada') || t.includes('pagamento aprovado'))
     return 'saida';
+
+  // ── ENTRADA (dinheiro entrando) ──
+  if (t.includes('você recebeu') || t.includes('voce recebeu') ||
+      t.includes('receb') || t.includes('creditad') ||
+      t.includes('você depositou') || t.includes('voce depositou') ||
+      t.includes('depósito') || t.includes('deposito') ||
+      t.includes('dinheiro já está disponível') || t.includes('dinheiro ja esta disponivel') ||
+      t.includes('está disponível') || t.includes('esta disponivel') ||
+      t.includes('entrada') || t.includes('caiu na conta'))
+    return 'entrada';
+
   return 'saida'; // padrão
 }
 
