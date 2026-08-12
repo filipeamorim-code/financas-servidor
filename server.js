@@ -100,7 +100,7 @@ function detectarTipo(titulo, texto) {
 
   // ── ENTRADA (dinheiro entrando) ──
   if (t.includes('você recebeu') || t.includes('voce recebeu') ||
-      t.includes('recebemos') || t.includes('creditad') ||
+      t.includes('receb') || t.includes('creditad') ||
       t.includes('transferência recebida') || t.includes('transferencia recebida') ||
       t.includes('recebemos sua transferência') || t.includes('recebemos sua transferencia') ||
       t.includes('você depositou') || t.includes('voce depositou') ||
@@ -114,6 +114,20 @@ function detectarTipo(titulo, texto) {
   return 'saida'; // padrão
 }
 
+// ── Extrai o estabelecimento de compras no cartão ──
+function extrairEstabelecimento(texto) {
+  // Ex: "Compra de R$ 20,84 APROVADA em DL*UberRides para o cartão com final 7190"
+  const regex = /em\s+(.+?)\s+para o cart[ãa]o/i;
+  const match = texto.match(regex);
+  if (match) {
+    let nome = match[1].trim();
+    // Remove prefixos de maquininha comuns: "DL*", "PAG*", "MP*", "PP*", etc.
+    nome = nome.replace(/^[A-Z]{2,4}\*/i, '');
+    return nome;
+  }
+  return null;
+}
+
 // ── APK envia lançamento aqui ──
 app.post('/lancamento', (req, res) => {
   const { titulo, texto, valor, descricao, conta, data } = req.body;
@@ -121,7 +135,11 @@ app.post('/lancamento', (req, res) => {
   if (!valor) return res.status(400).json({ erro: 'Valor obrigatório' });
 
   const tipo      = detectarTipo(titulo || '', texto || '');
-  const desc      = descricao || titulo || 'Mercado Pago';
+
+  // Se for compra no cartão, usa o estabelecimento como descrição
+  const estab = extrairEstabelecimento(texto || '');
+  const desc  = estab || descricao || titulo || 'Mercado Pago';
+
   const categoria = detectarCategoria(desc + ' ' + (texto || ''), tipo);
 
   const lancamento = {
