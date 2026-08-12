@@ -90,20 +90,25 @@ function detectarTipo(titulo, texto) {
       t.includes('pix enviado') || t.includes('enviad') ||
       t.includes('transferencia feita') || t.includes('transferência feita') ||
       t.includes('transferencia enviada') || t.includes('transferência enviada') ||
+      t.includes('transferência realizada') || t.includes('transferencia realizada') ||
       t.includes('você enviou') || t.includes('voce enviou') ||
       t.includes('pagamento realizado') || t.includes('pagamento efetuado') ||
       t.includes('debitad') || t.includes('você transferiu') || t.includes('voce transferiu') ||
-      t.includes('compra aprovada') || t.includes('pagamento aprovado'))
+      t.includes('compra aprovada') || t.includes('pagamento aprovado') ||
+      t.includes('compra de') || t.includes('gasto'))
     return 'saida';
 
   // ── ENTRADA (dinheiro entrando) ──
   if (t.includes('você recebeu') || t.includes('voce recebeu') ||
       t.includes('receb') || t.includes('creditad') ||
+      t.includes('transferência recebida') || t.includes('transferencia recebida') ||
+      t.includes('recebemos sua transferência') || t.includes('recebemos sua transferencia') ||
       t.includes('você depositou') || t.includes('voce depositou') ||
       t.includes('depósito') || t.includes('deposito') ||
       t.includes('dinheiro já está disponível') || t.includes('dinheiro ja esta disponivel') ||
       t.includes('está disponível') || t.includes('esta disponivel') ||
-      t.includes('entrada') || t.includes('caiu na conta'))
+      t.includes('entrada') || t.includes('caiu na conta') ||
+      t.includes('pix recebido'))
     return 'entrada';
 
   return 'saida'; // padrão
