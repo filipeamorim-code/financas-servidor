@@ -100,7 +100,7 @@ function detectarTipo(titulo, texto) {
 
   // ── ENTRADA (dinheiro entrando) ──
   if (t.includes('você recebeu') || t.includes('voce recebeu') ||
-      t.includes('receb') || t.includes('creditad') ||
+      t.includes('recebemos') || t.includes('creditad') ||
       t.includes('transferência recebida') || t.includes('transferencia recebida') ||
       t.includes('recebemos sua transferência') || t.includes('recebemos sua transferencia') ||
       t.includes('você depositou') || t.includes('voce depositou') ||
