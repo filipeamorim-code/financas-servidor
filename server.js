@@ -2,8 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+const pluggyRoutes = require('./pluggyRoutes'); // ← NOVO: integração Open Finance via Pluggy
+
 app.use(cors());
 app.use(express.json());
+
+app.use('/pluggy', pluggyRoutes); // ← NOVO: expõe /pluggy/connect-token, /pluggy/sync, /pluggy/webhook, etc.
 
 let lancamentos = [];
 
